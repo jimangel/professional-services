@@ -12,18 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-all:
-  hosts:
-  children:
-    workstation:
-      hosts:
-        10.200.0.2:
-    cp_nodes:
-      hosts:
-        10.200.0.3:
-        10.200.0.4:
-        10.200.0.5:
-    worker_nodes:
-      hosts:
-        10.200.0.6:
-        10.200.0.8:
+---
+# Playbook To Upgrade Anthos Cluster
+
+- hosts: workstation
+  remote_user: "{{ login_user }}"
+  gather_facts: "no"
+  vars_files:
+    - vars/anthos_vars.yml
+  roles:
+    - role: bmctl-tool
+    - role: upgrade-cluster

@@ -29,7 +29,7 @@
 
 - name: Create Cluster Config file
   ansible.builtin.template:
-    src: cluster.yaml.j2
+    src: ../../shared-files/cluster_config.yaml.j2
     dest: "{{ login_user_home }}/{{ bmctl_workspace_dir }}/{{ cluster_name }}/{{ cluster_name}}.yaml"
     owner: "{{ login_user }}"
     group: "{{ login_user_group }}"

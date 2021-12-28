@@ -16,9 +16,6 @@ login_user: anthos
 login_user_group: anthos
 login_user_home: /home/anthos
 
-# node login user, when "login_user" used for admin node is different for worker node.
-# node_login_user: anthos2
-
 # Possible values: ubuntu | rhel 
 # Use rhel for CentOS as well
 os_type: "ubuntu"
@@ -30,23 +27,23 @@ bmctl_tool: "yes"
 # if the GCP service accounts have already been created, copy the keys files to gcp_sa_key_dir directory
 service_accounts: "yes"
 
-bmctl_download_url: gs://anthos-baremetal-release/bmctl/1.8.2/linux-amd64/bmctl
+bmctl_download_url: gs://anthos-baremetal-release/bmctl/1.9.2/linux-amd64/bmctl
 bmctl_workspace_dir: bmctl-workspace
-gcp_sa_key_dir: /home/anthos/gcp_keys
+gcp_sa_key_dir: "{{ login_user_home }}/gcp_keys"
 local_gcr_sa_name: anthos-gcr-svc-account
 local_connect_agent_sa_name: connect-agent-svc-account
-local_connect_register_sa_name: connect-register-svc-account
+local_connect_register_sa_name: register-svc-account
 local_cloud_operations_sa_name: cloud-ops-svc-account
 
-ssh_private_key_path: /home/anthos/.ssh/id_rsa
+ssh_private_key_path: "{{ login_user_home }}/.ssh/id_rsa"
 # the GCP project ID
-project_id: 
+project_id: PROJECT_ID
 # GCP region e.g. us-central1
-location: 
+location: LOCATION
 # anthos cluster name
-cluster_name: 
+cluster_name: anthos-cluster
 # cluster type, possible values: standalone | hybrid | admin | user
-cluster_type: 
+cluster_type: hybrid
 max_pod_per_node: 250
 # container runtime, possible values: docker | contianerd
 container_runtime: containerd
@@ -57,6 +54,8 @@ pod_cidr: 192.168.0.0/16
 service_cidr: 10.96.0.0/12
 # cp_vip should be different than nodes ip addresses and should not be in lb_address_pool but should be from Control plane cluster node subnets
 cp_vip: 10.200.0.47
+# load balancer mode
+lb_mode: bundled
 # ingress_vip should be in lb_address_pool
 ingress_vip: 10.200.0.48
 lb_address_pool: 
@@ -66,7 +65,7 @@ lb_address_pool:
 admin_kubeconfig_path: 
 # list of users or service accounts that will be connect gateway members
 cgw_members: 
-- user:EXAMPLE_USER@google.com
+- user:EXAMPLE_USERNAME@google.com
 - serviceAccount:EXAMPLE_SA@GCP_PROJECT_ID.iam.gserviceaccount.com
-# Provide multiple NIC for pods - https://cloud.google.com/anthos/clusters/docs/bare-metal/latest/how-to/multi-nic
-# multi_nic: true
+# Define maintenance nodes in cidrBlocks addresses, Example 10.200.0.5-10.200.0.8
+maintenance_nodes_block: []

@@ -44,10 +44,14 @@ spec:
 {% for cp_node in groups['cp_nodes'] %}
       - address: {{ cp_node }}
 {% endfor %}
-  clusterNetwork:
-{% if multi_nic is defined %}
-    multipleNetworkInterfaces: {{ multi_nic }}
+{% if maintenance_nodes_block is defined and maintenance_nodes_block|length %}
+  maintenanceBlocks:
+    cidrBlocks:
+{% for maintenance_node in maintenance_nodes_block %}
+    - {{ maintenance_node }}
+{% endfor %}
 {% endif %}
+  clusterNetwork:
     pods:
       cidrBlocks:
       - {{ pod_cidr }}
@@ -55,19 +59,21 @@ spec:
       cidrBlocks:
       - {{ service_cidr }}
   loadBalancer:
-    mode: bundled
+    mode: {{ lb_mode }}
     ports:
       controlPlaneLBPort: 443
     vips:
       controlPlaneVIP: {{ cp_vip }}
 {% if (cluster_type != 'admin') %}
       ingressVIP: {{ ingress_vip }}
+{% if lb_mode is defined and lb_mode == 'bundled' %}
     addressPools:
     - name: pool1
       addresses:
 {% for lb_address in lb_address_pool %}
       - {{ lb_address }}
 {% endfor %}
+{% endif %}
 {% endif %}
   clusterOperations:
     projectID: {{ project_id }}
@@ -86,11 +92,7 @@ spec:
       maxPodsPerNode: {{ max_pod_per_node }}
     containerRuntime: {{ container_runtime }}
   nodeAccess:
-{% if node_login_user is defined %}
-    loginUser: {{ node_login_user }}
-{% else %}
     loginUser: {{ login_user }}
-{% endif %}
 {% if (cluster_type != 'admin') and groups['worker_nodes'] %}
 ---
 apiVersion: baremetal.cluster.gke.io/v1
@@ -101,7 +103,8 @@ metadata:
 spec:
   clusterName: {{ cluster_name }}
   nodes:
-{% for worker_node in groups['worker_nodes'] %}
+{% for worker_node in groups['worker_nodes']%}
   - address: {{ worker_node }}
 {% endfor %}
 {% endif %}
+  

@@ -12,18 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-all:
-  hosts:
-  children:
-    workstation:
-      hosts:
-        10.200.0.2:
-    cp_nodes:
-      hosts:
-        10.200.0.3:
-        10.200.0.4:
-        10.200.0.5:
-    worker_nodes:
-      hosts:
-        10.200.0.6:
-        10.200.0.8:
+- name: Create And Copy Updated Cluster Config file
+  ansible.builtin.template:
+    src: ../../shared-files/cluster_config.yaml.j2
+    dest: "{{ login_user_home }}/{{ bmctl_workspace_dir }}/{{ cluster_name }}/{{ cluster_name}}.yaml"
+    owner: "{{ login_user }}"
+    group: "{{ login_user_group }}"
+
+- name: Update Cluster
+  shell:
+    cmd: "bmctl update cluster -c {{ cluster_name }} --kubeconfig {{ bmctl_workspace_dir }}/{{ cluster_name }}/{{ cluster_name }}-kubeconfig"
+    chdir: "{{ login_user_home }}"

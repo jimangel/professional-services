@@ -108,6 +108,12 @@
     --member="serviceAccount:{{ local_cloud_operations_sa_name }}@{{ project_id }}.iam.gserviceaccount.com"
     --role="roles/monitoring.dashboardEditor"
 
+- name: Grant opsconfigmonitoring.resourceMetadata.writer role to Cloud Operations Service Account
+  shell: >
+    gcloud projects add-iam-policy-binding "{{ project_id }}"
+    --member="serviceAccount:{{ local_cloud_operations_sa_name }}@{{ project_id }}.iam.gserviceaccount.com"
+    --role="roles/opsconfigmonitoring.resourceMetadata.writer" 
+
 - name: Generate and download Cloud Operations Service Account keys
   shell: >
     gcloud iam service-accounts keys create "{{ local_cloud_operations_sa_name }}".json
