@@ -28,7 +28,7 @@
 
 - name: Download bmctl
   shell:
-    cmd: gsutil cp {{ bmctl_download_url }} .
+    cmd: whoami && gsutil cp {{ bmctl_download_url }} .
 
 - name: Make bmctl executable
   ansible.builtin.file:

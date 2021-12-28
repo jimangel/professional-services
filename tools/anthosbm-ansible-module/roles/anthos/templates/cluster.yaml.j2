@@ -55,19 +55,13 @@ spec:
       cidrBlocks:
       - {{ service_cidr }}
   loadBalancer:
-    mode: bundled
+    mode: {{ lb_mode }}
     ports:
       controlPlaneLBPort: 443
     vips:
       controlPlaneVIP: {{ cp_vip }}
 {% if (cluster_type != 'admin') %}
       ingressVIP: {{ ingress_vip }}
-    addressPools:
-    - name: pool1
-      addresses:
-{% for lb_address in lb_address_pool %}
-      - {{ lb_address }}
-{% endfor %}
 {% endif %}
   clusterOperations:
     projectID: {{ project_id }}

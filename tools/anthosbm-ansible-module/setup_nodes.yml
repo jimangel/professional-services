@@ -12,10 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-[defaults]
-inventory = ./inventory/hosts.yml
-host_key_checking = False
-#command_warnings = False
-gathering = smart
-fact_caching = jsonfile
-fact_caching_connection = /tmp/facts_cache
+---
+# Playbook to create Anthos Cluster
+- hosts:
+  -  cp_nodes
+  -  worker_nodes
+  remote_user: "{{ login_user }}"
+  gather_facts: "no"
+  vars_files:
+    - vars/anthos_vars.yml
+  roles:
+    - role: ubuntu-node-prereqs
+      become: yes
+      become_method: sudo
+      when: os_type == "ubuntu"

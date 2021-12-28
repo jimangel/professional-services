@@ -1,0 +1,75 @@
+# Copyright 2021 Google LLC
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+- name: Create containerd config file
+  file:
+    path: "/etc/modules-load.d/containerd.conf"
+    state: "touch"
+
+- name: Add conf for containerd
+  blockinfile:
+    path: "/etc/modules-load.d/containerd.conf"
+    block: |
+            overlay
+            br_netfilter
+
+- name: modprobe
+  shell: |
+          sudo modprobe overlay
+          sudo modprobe br_netfilter
+
+
+- name: Set system configurations for Kubernetes networking
+  file:
+    path: "/etc/sysctl.d/99-kubernetes-cri.conf"
+    state: "touch"
+
+- name: Add conf for containerd
+  blockinfile:
+    path: "/etc/sysctl.d/99-kubernetes-cri.conf"
+    block: |
+            net.bridge.bridge-nf-call-iptables = 1
+            net.ipv4.ip_forward = 1
+            net.bridge.bridge-nf-call-ip6tables = 1
+
+- name: Apply new settings
+  command: sudo sysctl --system
+
+- name: install containerd
+  shell: |
+          sudo apt-get update && sudo apt-get install -y containerd
+          sudo mkdir -p /etc/containerd
+          sudo containerd config default | sudo tee /etc/containerd/config.toml
+          sudo systemctl restart containerd
+
+- name: disable swap
+  shell: |
+          sudo swapoff -a
+          sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+
+- name: Download and unarchive crictl
+  ansible.builtin.unarchive:
+    src: https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.22.0/crictl-v1.22.0-linux-amd64.tar.gz
+    dest: /usr/bin
+    remote_src: yes
+
+- name: Changing perm of "/usr/bin/crictl", adding "+x"
+  file: dest=/usr/bin/crictl mode=a+x
+
+- name: Create a symbolic link for runc
+  ansible.builtin.file:
+    src: /usr/sbin/runc
+    dest: /usr/local/sbin/runc
+    state: link

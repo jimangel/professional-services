@@ -14,7 +14,7 @@
 
 - name: Reset ssh connection to allow group changes
   meta: reset_connection
-  
+
 - name: Delete bmctl workspace cluster directory if exists
   ansible.builtin.file:
     path: "{{ login_user_home }}/{{ bmctl_workspace_dir }}/{{ cluster_name }}"

@@ -16,10 +16,10 @@
 - name: Remove previous docker versions [Ubuntu]
   apt:
     pkg:
+    - containerd
     - docker
     - docker-engine
     - docker.io
-    - containerd
     - runc
     state: absent
     autoremove: yes

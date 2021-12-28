@@ -52,7 +52,11 @@
       become_method: sudo
       when: bmctl_tool == "yes"
     - role: service-accounts
+      become: yes
+      become_user: "{{ login_user }}"
       when: service_accounts == "yes"
     - role: anthos
+      become: yes
+      become_user: "{{ login_user }}"
     - role: connect-gateway
       when: (cgw_members is defined) and (cgw_members != None)

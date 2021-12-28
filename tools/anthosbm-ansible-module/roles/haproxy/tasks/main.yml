@@ -12,10 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-[defaults]
-inventory = ./inventory/hosts.yml
-host_key_checking = False
-#command_warnings = False
-gathering = smart
-fact_caching = jsonfile
-fact_caching_connection = /tmp/facts_cache
+---
+- name: Install tools for adding PPA repositories
+  become: true
+  apt:
+    name: software-properties-common
+    state: latest
+
+- name: Add haproxy-2.4 repository from PPA
+  ansible.builtin.apt_repository:
+    repo: ppa:vbernat/haproxy-2.4
+
+- name: Update repositories cache and install "haproxy" package
+  apt:
+    name: haproxy=2.4.*
+    update_cache: yes
+
+- name: Create Cluster Config file
+  ansible.builtin.template:
+    src: haproxy.cfg.j2
+    dest: "/etc/haproxy/haproxy.cfg"
