@@ -21,7 +21,7 @@ git commit -m "adding these great improvements"
 git push -u origin customer-lab-live
 ```
 
-Once pushed, navigate to the origin repo: https://github.com/jimangel/professional-services and [open a PR](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request).
+Once pushed, navigate to the upstream repo: https://github.com/jimangel/professional-services and [open a PR](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request).
 
 ## Overview
 
