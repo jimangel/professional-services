@@ -67,7 +67,7 @@ This is written from the customer perspective. How to use this repo effectively.
 
     ```
     # replace YOUR_USER with your username
-    git clone https://github.com/jimangel/professional-services.git
+    git clone https://github.com/YOUR_USER/professional-services.git
     cd professional-services
     ```  
 1) Setup push/pull locations (upstream)
