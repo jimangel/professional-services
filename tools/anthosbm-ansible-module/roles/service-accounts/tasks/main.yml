@@ -15,6 +15,7 @@
 - name: Enable Google Cloud APIs for Anthos
   shell: >
     gcloud services enable --project="{{ project_id }}"
+    anthosaudit.googleapis.com
     anthos.googleapis.com
     anthosgke.googleapis.com
     cloudresourcemanager.googleapis.com
@@ -27,6 +28,8 @@
     servicemanagement.googleapis.com
     serviceusage.googleapis.com
     stackdriver.googleapis.com
+  tags:
+  - services
 
 - name: Create GCR Service Account
   shell: gcloud iam service-accounts create "{{ local_gcr_sa_name }}" --project="{{ project_id }}"
