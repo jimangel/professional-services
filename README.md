@@ -50,8 +50,8 @@ The following shows the upstream and my fork and how they relate to the 3 branch
 * `pso-gdc-live`
     * All changes from PSO GDC team
 * `jim-lab-live`
-    * All changes from Jim, to be merged into `pso-gdc-live`
-* `customer-lab-live` ASAP
+    * All changes from Jim, to be merged into `pso-gdc-live`  ASAP
+* `customer-lab-live`
     * All changes from Broadcom team, based off of `pso-gdc-live`
 
 ## Working together
