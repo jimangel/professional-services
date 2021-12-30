@@ -21,5 +21,5 @@
 
 - name: Upgrade Anthos Cluster Version
   shell:
-    cmd: "bmctl upgrade cluster -c {{ cluster_name }} --kubeconfig {{ bmctl_workspace_dir }}/{{ cluster_name }}/{{ cluster_name }}-kubeconfig --bootstrap-cluster-pod-cidr={{ pod_cidr }} --bootstrap-cluster-service-cidr={{ service_cidr }} --reuse-bootstrap-cluster --keep-bootstrap-cluster"
+    cmd: "bmctl upgrade cluster -c {{ cluster_name }} --kubeconfig {{ bmctl_workspace_dir }}/{{ cluster_name }}/{{ cluster_name }}-kubeconfig --bootstrap-cluster-pod-cidr={{ pod_cidr }} --bootstrap-cluster-service-cidr={{ service_cidr }}"
     chdir: "{{ login_user_home }}"

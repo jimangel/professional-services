@@ -30,6 +30,7 @@ service_accounts: "yes"
 bmctl_download_url: gs://anthos-baremetal-release/bmctl/1.9.2/linux-amd64/bmctl
 bmctl_workspace_dir: bmctl-workspace
 gcp_sa_key_dir: "{{ login_user_home }}/gcp_keys"
+gcloud_preq_sa_name: anthos-preq-gcloud-svc-account
 local_gcr_sa_name: anthos-gcr-svc-account
 local_connect_agent_sa_name: connect-agent-svc-account
 local_connect_register_sa_name: register-svc-account

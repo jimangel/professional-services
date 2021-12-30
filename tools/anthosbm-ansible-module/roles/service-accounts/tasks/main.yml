@@ -30,12 +30,14 @@
 
 - name: Create GCR Service Account
   shell: gcloud iam service-accounts create "{{ local_gcr_sa_name }}" --project="{{ project_id }}"
+  ignore_errors: yes
 
 - name: Generate and download GCR Service Account Key
   shell: >
     gcloud iam service-accounts keys create "{{ local_gcr_sa_name }}".json
     --iam-account="{{ local_gcr_sa_name }}@{{ project_id }}.iam.gserviceaccount.com"
     --project="{{ project_id }}"
+  ignore_errors: yes  
 
 - name: Create directory for GCP Keys if it does not exist
   ansible.builtin.file:
@@ -47,78 +49,92 @@
 
 - name: Create Connect Agent Service Account
   shell: gcloud iam service-accounts create "{{ local_connect_agent_sa_name }}" --project="{{ project_id }}"
+  ignore_errors: yes
 
 - name: Grant gkehub.connect role to Connect Agent Service Account
   shell: >
     gcloud projects add-iam-policy-binding "{{ project_id }}"
     --member="serviceAccount:{{ local_connect_agent_sa_name }}@{{ project_id }}.iam.gserviceaccount.com"
     --role="roles/gkehub.connect"
+  ignore_errors: yes  
 
 - name: Generate and download Connect Agent Service Account key
   shell: >
     gcloud iam service-accounts keys create "{{ local_connect_agent_sa_name }}".json
     --iam-account="{{ local_connect_agent_sa_name }}@{{ project_id }}.iam.gserviceaccount.com"
     --project="{{ project_id }}"
+  ignore_errors: yes  
 
 - name: Move Connect Agent Service Account key file
   shell: mv "{{ local_connect_agent_sa_name }}".json "{{ gcp_sa_key_dir }}"
+  ignore_errors: yes
 
 - name: Create Connect Register Service Account
   shell: gcloud iam service-accounts create "{{ local_connect_register_sa_name }}" --project="{{ project_id }}"
+  ignore_errors: yes
 
 - name: Grant gkehub.admin role to Connect Register Service account
   shell: >
     gcloud projects add-iam-policy-binding "{{ project_id }}"
     --member="serviceAccount:{{ local_connect_register_sa_name }}@{{ project_id }}.iam.gserviceaccount.com"
     --role="roles/gkehub.admin"
+  ignore_errors: yes  
 
 - name: Generate and download Connect Register Service Account keys
   shell: >
     gcloud iam service-accounts keys create "{{ local_connect_register_sa_name }}".json
     --iam-account="{{ local_connect_register_sa_name }}@{{ project_id }}.iam.gserviceaccount.com"
     --project="{{ project_id }}"
+  ignore_errors: yes  
 
 - name: Move Connect Register Service Account key file
   shell: mv "{{ local_connect_register_sa_name }}".json "{{ gcp_sa_key_dir }}"
 
 - name: Create Cloud Operations Service Account
   shell: gcloud iam service-accounts create "{{ local_cloud_operations_sa_name }}" --project="{{ project_id }}"
+  ignore_errors: yes
 
 - name: Grant logging.logWriter role to Cloud Operations Service Account
   shell: >
     gcloud projects add-iam-policy-binding "{{ project_id }}"
     --member="serviceAccount:{{ local_cloud_operations_sa_name }}@{{ project_id }}.iam.gserviceaccount.com"
     --role="roles/logging.logWriter"
+  ignore_errors: yes  
 
 - name: Grant monitoring.metricWriter role to Cloud Operations Service Account
   shell: >
     gcloud projects add-iam-policy-binding "{{ project_id }}"
     --member="serviceAccount:{{ local_cloud_operations_sa_name }}@{{ project_id }}.iam.gserviceaccount.com"
     --role="roles/monitoring.metricWriter"
+  ignore_errors: yes  
 
 - name: Grant stackdriver.resourceMetadata.writer role to Cloud Operations Service Account
   shell: >
     gcloud projects add-iam-policy-binding "{{ project_id }}"
     --member="serviceAccount:{{ local_cloud_operations_sa_name }}@{{ project_id }}.iam.gserviceaccount.com"
     --role="roles/stackdriver.resourceMetadata.writer"
+  ignore_errors: yes  
 
 - name: Grant monitoring.dashboardEditor role to Cloud Operations Service Account
   shell: >
     gcloud projects add-iam-policy-binding "{{ project_id }}"
     --member="serviceAccount:{{ local_cloud_operations_sa_name }}@{{ project_id }}.iam.gserviceaccount.com"
     --role="roles/monitoring.dashboardEditor"
+  ignore_errors: yes  
 
 - name: Grant opsconfigmonitoring.resourceMetadata.writer role to Cloud Operations Service Account
   shell: >
     gcloud projects add-iam-policy-binding "{{ project_id }}"
     --member="serviceAccount:{{ local_cloud_operations_sa_name }}@{{ project_id }}.iam.gserviceaccount.com"
     --role="roles/opsconfigmonitoring.resourceMetadata.writer" 
+  ignore_errors: yes  
 
 - name: Generate and download Cloud Operations Service Account keys
   shell: >
     gcloud iam service-accounts keys create "{{ local_cloud_operations_sa_name }}".json
     --iam-account="{{ local_cloud_operations_sa_name }}@{{ project_id }}.iam.gserviceaccount.com"
     --project="{{ project_id }}"
+  ignore_errors: yes  
 
 - name: Move Cloud Operations Service Account key file
   shell: mv "{{ local_cloud_operations_sa_name }}".json "{{ gcp_sa_key_dir }}"
