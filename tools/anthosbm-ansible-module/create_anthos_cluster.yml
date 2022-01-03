@@ -38,15 +38,15 @@
     - role: ws-docker
       become: yes
       become_method: sudo
-      when: ws_docker == "yes"
+      tags: [docker]
     - role: gcloud-sdk
       become: yes
       become_method: sudo
-      when: gcloud_sdk == "yes"
+      tags: [gcloud]
     - role: kubectl-tool
       become: yes
       become_method: sudo
-      when: kubectl_tool == "yes"
+      tags: [kubectl]
     - role: bmctl-tool
       become: yes
       become_method: sudo
@@ -56,7 +56,7 @@
       when: service_accounts == "yes"
       tags: [sa, serviceaccount]
     - role: anthos
-      tags: [create,cluster]
+      tags: [anthos]
     - role: connect-gateway
       when: (cgw_members is defined) and (cgw_members != None)
-      tags: [connect, gke-connect]
+      tags: [never, connect, gke-connect]
