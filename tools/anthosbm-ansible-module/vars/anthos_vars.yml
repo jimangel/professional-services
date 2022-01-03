@@ -19,14 +19,7 @@ login_user_home: /home/anthos
 # Possible values: ubuntu | rhel 
 # Use rhel for CentOS as well
 os_type: "ubuntu"
-# Set value to "yes" to apply the respective role
-ws_docker: "yes"
-gcloud_sdk: "yes"
-kubectl_tool: "yes"
-bmctl_tool: "yes"
 # if the GCP service accounts have already been created, copy the keys files to gcp_sa_key_dir directory
-service_accounts: "yes"
-
 bmctl_download_url: gs://anthos-baremetal-release/bmctl/1.9.2/linux-amd64/bmctl
 bmctl_workspace_dir: bmctl-workspace
 gcp_sa_key_dir: "{{ login_user_home }}/gcp_keys"
@@ -45,7 +38,7 @@ location: LOCATION
 cluster_name: anthos-cluster
 # cluster type, possible values: standalone | hybrid | admin | user
 cluster_type: hybrid
-max_pod_per_node: 250
+max_pod_per_node: 50
 # container runtime, possible values: docker | contianerd
 container_runtime: containerd
 # enable/disable application logging for cluster workloads. use 'true' to enable
