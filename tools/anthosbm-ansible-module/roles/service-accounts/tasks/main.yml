@@ -16,15 +16,16 @@
   shell: >
     gcloud services enable --project="{{ project_id }}"
     anthos.googleapis.com
+    anthosaudit.googleapis.com
     anthosgke.googleapis.com
     cloudresourcemanager.googleapis.com
     container.googleapis.com
     gkeconnect.googleapis.com
     gkehub.googleapis.com
+    iam.googleapis.com
     logging.googleapis.com
     monitoring.googleapis.com
-    servicecontrol.googleapis.com
-    servicemanagement.googleapis.com
+    opsconfigmonitoring.googleapis.com
     serviceusage.googleapis.com
     stackdriver.googleapis.com
 

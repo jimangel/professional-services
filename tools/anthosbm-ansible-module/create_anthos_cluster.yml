@@ -18,7 +18,7 @@
   remote_user: "{{ login_user }}"
   gather_facts: "no"
   vars_files:
-    - vars/anthos_vars.yml
+    - "vars/anthos_vars_{{ cluster_type }}.yml"
   roles:
     - role: ubuntu-prereq
       become: yes
@@ -33,7 +33,7 @@
   remote_user: "{{ login_user }}"
   gather_facts: "no"
   vars_files:
-    - vars/anthos_vars.yml
+    - "vars/anthos_vars_{{ cluster_type }}.yml"
   roles:
     - role: ws-docker
       become: yes
@@ -59,4 +59,4 @@
       tags: [anthos]
     - role: connect-gateway
       when: (cgw_members is defined) and (cgw_members != None)
-      tags: [never, connect, gke-connect]
+      tags: [connect, gke-connect]
