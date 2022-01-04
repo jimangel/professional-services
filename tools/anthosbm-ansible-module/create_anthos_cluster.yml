@@ -50,13 +50,11 @@
     - role: bmctl-tool
       become: yes
       become_method: sudo
-      when: bmctl_tool == "yes"
       tags: [bmctl]
     - role: service-accounts
-      when: service_accounts == "yes"
-      tags: [sa, serviceaccount]
+      tags: [never,sa,serviceaccount]
     - role: anthos
       tags: [anthos]
     - role: connect-gateway
       when: (cgw_members is defined) and (cgw_members != None)
-      tags: [connect, gke-connect]
+      tags: [never,connect, gke-connect]
