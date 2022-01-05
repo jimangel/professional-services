@@ -16,11 +16,11 @@
 
 {% if (cluster_type != 'user') %}
 sshPrivateKeyPath: {{ ssh_private_key_path }}
-gcrKeyPath: bmctl-workspace/.sa-keys/pentagon-324205-anthos-baremetal-gcr.json
-cloudOperationsServiceAccountKeyPath: bmctl-workspace/.sa-keys/pentagon-324205-anthos-baremetal-cloud-ops.json
+gcrKeyPath: bmctl-workspace/.sa-keys/{{ project_id }}-anthos-baremetal-gcr.json
+cloudOperationsServiceAccountKeyPath: bmctl-workspace/.sa-keys/{{ project_id }}-anthos-baremetal-cloud-ops.json
 {% endif %}
-gkeConnectAgentServiceAccountKeyPath: bmctl-workspace/.sa-keys/pentagon-324205-anthos-baremetal-connect.json
-gkeConnectRegisterServiceAccountKeyPath: bmctl-workspace/.sa-keys/pentagon-324205-anthos-baremetal-register.json
+gkeConnectAgentServiceAccountKeyPath: bmctl-workspace/.sa-keys/{{ project_id }}-anthos-baremetal-connect.json
+gkeConnectRegisterServiceAccountKeyPath: bmctl-workspace/.sa-keys/{{ project_id }}-anthos-baremetal-register.json
 ---
 apiVersion: v1
 kind: Namespace
