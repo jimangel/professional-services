@@ -21,7 +21,17 @@
 
 - name: Download bmctl
   shell:
-    cmd: whoami && gsutil cp {{ bmctl_download_url }} .
+    cmd: gsutil cp {{ bmctl_download_url }} .
+  become: false
+
+- name: Get Username of user downloading bmctl
+  local_action: command whoami
+  become: false
+  register: username_on_the_host
+
+- name: Print Username
+  ansible.builtin.debug:
+    msg: "User downloading bmctl tool is: {{ username_on_the_host.stdout }}"
 
 - name: Make bmctl executable
   ansible.builtin.file:
