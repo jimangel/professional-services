@@ -12,7 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Reset Cluster
+- name: Reset Hybrid Cluster
   shell:
     cmd: "bmctl reset cluster -c {{ cluster_name }}"
     chdir: "{{ login_user_home }}"
+  when: cluster_type == "hybrid"
+
+- name: Reset User Cluster
+  shell:
+    cmd: "bmctl reset cluster -c {{ cluster_name }} --admin-kubeconfig {{ admin_kubeconfig_path }}"
+    chdir: "{{ login_user_home }}"
+  when: cluster_type == "user"
