@@ -14,7 +14,9 @@
 
 ---
 # Playbook to create Anthos Cluster
-- hosts: all
+- hosts:
+    - cp_nodes
+    - worker_nodes
   remote_user: "{{ login_user }}"
   gather_facts: "no"
   vars_files:
@@ -24,6 +26,7 @@
       become: yes
       become_method: sudo
       when: os_type == "ubuntu"
+      tags: [ubuntu-prereq]
     - role: rhel-prereq
       become: yes
       become_method: sudo
@@ -38,11 +41,11 @@
     - role: ws-docker
       become: yes
       become_method: sudo
-      tags: [docker]
+      tags: [never,docker]
     - role: gcloud-sdk
       become: yes
       become_method: sudo
-      tags: [gcloud]
+      tags: [never,gcloud]
     - role: kubectl-tool
       become: yes
       become_method: sudo
@@ -57,4 +60,4 @@
       tags: [anthos]
     - role: connect-gateway
       when: (cgw_members is defined) and (cgw_members != None)
-      tags: [never,connect, gke-connect]
+      tags: [connect,gke-connect]
