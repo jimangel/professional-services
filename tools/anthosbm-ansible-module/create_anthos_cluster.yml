@@ -31,7 +31,6 @@
       become: yes
       become_method: sudo
       when: os_type == "rhel"
-
 - hosts: workstation
   remote_user: "{{ login_user }}"
   gather_facts: "no"

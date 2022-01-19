@@ -12,10 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# workstation user and group
-login_user: jangel
-login_user_group: jangel
-login_user_home: /home/jangel
+login_user: anthos
+login_user_group: anthos
+login_user_home: /home/anthos
 
 # Possible values: ubuntu | rhel 
 # Use rhel for CentOS as well
@@ -32,37 +31,41 @@ local_cloud_operations_sa_name: cloud-ops-svc-account
 
 node_login_user: anthos
 
+# pod and service CIDRs used by the bootstrap (kind) cluster
+kind_pod_cidr: 192.168.0.0/16
+kind_service_cidr: 10.96.0.0/12
+
 ssh_private_key_path: "{{ login_user_home }}/.ssh/id_rsa"
 # the GCP project ID
-project_id: new-anthos-test
+project_id: PROJECT_ID
 # GCP region e.g. us-central1
-location: us-central1
+location: LOCATION
 # anthos cluster name
 cluster_name: anthos-cluster
 # cluster type, possible values: standalone | hybrid | admin | user
 cluster_type: hybrid
-max_pod_per_node: 128
+max_pod_per_node: 50
 # container runtime, possible values: docker | contianerd
 container_runtime: containerd
 # enable/disable application logging for cluster workloads. use 'true' to enable
 app_logs: false
 # change pod and service cidr if the default ones overlap with cluster nodes subnets
-pod_cidr: 172.16.0.0/18
-service_cidr: 10.96.0.0/21
+pod_cidr: 192.168.0.0/16
+service_cidr: 10.96.0.0/12
 # cp_vip should be different than nodes ip addresses and should not be in lb_address_pool but should be from Control plane cluster node subnets
-cp_vip: 192.168.7.212
+cp_vip: 10.200.0.47
 # load balancer mode
 lb_mode: bundled
 # ingress_vip should be in lb_address_pool
-ingress_vip: 192.168.7.213
+ingress_vip: 10.200.0.48
 lb_address_pool: 
-- 192.168.7.213-192.168.7.216
+- 10.200.0.48/28
 # For a 'user' cluster, place the admin cluster kubeconfig file on workstation machine 
 # and set admin_kubeconfig_path to the absolute path of this file
 admin_kubeconfig_path: 
 # list of users or service accounts that will be connect gateway members
 cgw_members: 
-- user:jameswangel@gmail.com
-# - serviceAccount:EXAMPLE_SA@GCP_PROJECT_ID.iam.gserviceaccount.com
+- user:EXAMPLE_USERNAME@google.com
+- serviceAccount:EXAMPLE_SA@GCP_PROJECT_ID.iam.gserviceaccount.com
 # Define maintenance nodes in cidrBlocks addresses, Example 10.200.0.5-10.200.0.8
 maintenance_nodes_block: []
