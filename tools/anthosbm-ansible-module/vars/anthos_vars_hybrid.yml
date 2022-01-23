@@ -29,6 +29,12 @@ local_connect_agent_sa_name: connect-agent-svc-account
 local_connect_register_sa_name: register-svc-account
 local_cloud_operations_sa_name: cloud-ops-svc-account
 
+node_login_user: anthos
+
+# pod and service CIDRs used by the bootstrap (kind) cluster
+kind_pod_cidr: 192.168.0.0/16
+kind_service_cidr: 10.96.0.0/12
+
 ssh_private_key_path: "{{ login_user_home }}/.ssh/id_rsa"
 # the GCP project ID
 project_id: PROJECT_ID

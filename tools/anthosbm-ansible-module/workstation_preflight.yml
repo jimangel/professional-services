@@ -12,23 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-all:
-  hosts:
-  children:
-    workstation:
-      hosts:
-        10.200.0.2:
-          ansible_connection: local
-    cp_nodes:
-      hosts:
-        10.200.0.3:
-        10.200.0.4:
-        10.200.0.5:
-      vars:
-        ansible_user: "{{ node_login_user }}"  
-    worker_nodes:
-      hosts:
-        10.200.0.6:
-        10.200.0.8:
-      vars:
-        ansible_user: "{{ node_login_user }}"  
+---
+- hosts: workstation
+#  remote_user: "{{ login_user }}"
+  gather_facts: "yes"
+#  vars_files:
+#    - "vars/anthos_vars_{{ cluster_type }}.yml"
+  roles:
+    - role: workstation-preflight
+      become: yes
+      become_method: sudo
+      tags: [workstation]
+    - role: ws-docker
+      become: yes
+      become_method: sudo
+      tags: [never,install-docker]
+    - role: gcloud-sdk
+      become: yes
+      become_method: sudo
+      tags: [never,install-gcloud]
