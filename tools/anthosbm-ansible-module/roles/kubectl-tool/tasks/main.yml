@@ -13,11 +13,6 @@
 # limitations under the License.
 
 ---
-- name: Remove kubectl if present
-  ansible.builtin.file:
-    path: /usr/local/sbin/kubectl
-    state: absent
-
 - name: Get stable version of Kubectl
   uri: 
     url: https://storage.googleapis.com/kubernetes-release/release/stable.txt
