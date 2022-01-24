@@ -16,7 +16,7 @@
   shell:
     cmd: "bmctl reset cluster -c {{ cluster_name }}"
     chdir: "{{ login_user_home }}"
-  when: cluster_type == "hybrid"
+  when: cluster_type != "user"
 
 - name: Reset User Cluster
   shell:
