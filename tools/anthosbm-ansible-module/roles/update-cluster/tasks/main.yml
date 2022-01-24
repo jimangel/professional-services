@@ -19,7 +19,14 @@
     owner: "{{ login_user }}"
     group: "{{ login_user_group }}"
 
-- name: Update Cluster
+- name: Update admin/hybrid Cluster
   shell:
-    cmd: "bmctl update cluster -c {{ cluster_name }} --kubeconfig {{ bmctl_workspace_dir }}/{{ cluster_name }}/{{ cluster_name }}-kubeconfig"
+    cmd: "bmctl update cluster -c {{ cluster_name }} --kubeconfig {{ admin_kubeconfig_path }}"
     chdir: "{{ login_user_home }}"
+  when: cluster_type != "user" 
+
+- name: Update user Cluster
+  shell:
+    cmd: "bmctl update cluster -c {{ cluster_name }} --admin-kubeconfig {{ admin_kubeconfig_path }}"
+    chdir: "{{ login_user_home }}"
+  when: cluster_type == "user"  
