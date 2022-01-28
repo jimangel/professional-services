@@ -18,7 +18,7 @@
 - hosts: workstation
   remote_user: "{{ login_user }}"
   gather_facts: "no"
-  vars_files:
-    - "vars/anthos_vars_{{ cluster_type }}.yml"
+  # vars_files:
+  #   - "vars/anthos_vars_{{ cluster_type }}.yml"
   roles:
     - role: reset-cluster

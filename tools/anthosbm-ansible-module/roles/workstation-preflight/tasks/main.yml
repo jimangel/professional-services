@@ -13,37 +13,37 @@
 # limitations under the License.
 
 ---
-- name: "Check if DOCKER is installed"
-  package_facts:
-    manager: "auto"
-- name: "Is docker found?"
-  debug:
-    msg: "Docker found"
-  when: "'docker.io' in ansible_facts.packages"
-- name: "Is docker NOT found?"
-  fail:
-    msg: "Docker NOT found"
-  when: "'docker.io' not in ansible_facts.packages"
+ - name: "Check if DOCKER is installed"
+   package_facts:
+     manager: "auto"
+ - name: "Is docker found?"
+   debug:
+     msg: "Docker found"
+   when: "'docker.io' in ansible_facts.packages"
+ - name: "Is docker NOT found?"
+   fail:
+     msg: "Docker NOT found"
+   when: "'docker.io' not in ansible_facts.packages"
 
-- name: "Check if GCLOUD is installed"
-  package_facts:
-    manager: "auto"
-- name: "Is gcloud found?"
-  debug:
-    msg: "gcloud found"
-  when: "'google-cloud-sdk' in ansible_facts.packages"
-- name: "Is gcloud NOT found?"
-  fail:
-    msg: "gcloud NOT found"
-  when: "'google-cloud-sdk' not in ansible_facts.packages"
+ - name: "Check if GCLOUD is installed"
+   package_facts:
+     manager: "auto"
+ - name: "Is gcloud found?"
+   debug:
+     msg: "gcloud found"
+   when: "'google-cloud-sdk' in ansible_facts.packages"
+ - name: "Is gcloud NOT found?"
+   fail:
+     msg: "gcloud NOT found"
+   when: "'google-cloud-sdk' not in ansible_facts.packages"
 
 
-- name: "checking disk space"
-  command: df -h /
-  register: space 
+ - name: "checking disk space"
+   command: df -h /
+   register: space
 
-- name: "ENSURE YOU HAVE 50GB 'Avail' SPACE ON DISK"
-  debug:
+ - name: "ENSURE YOU HAVE 50GB 'Avail' SPACE ON DISK"
+   debug:
     var: space.stdout_lines
 
 # below is good for debugging, uncomment and grep output for `docker` to figure out name
