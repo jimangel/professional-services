@@ -16,28 +16,9 @@
 - hosts: workstation
 #  remote_user: "{{ login_user }}"
   gather_facts: "yes"
-  vars_files:
-    - "vars/anthos_vars_{{ cluster_type }}.yml"
   roles:
     - role: workstation-preflight
       become: yes
       become_method: sudo
       tags: [workstation]
-    - role: ws-docker
-      become: yes
-      become_method: sudo
-      tags: [install-docker]
-    - role: gcloud-sdk
-      become: yes
-      become_method: sudo
-      tags: [install-gcloud]
-    - role: kubectl-tool
-      become: yes
-      become_method: sudo
-      tags: [kubectl] 
-    - role: bmctl-tool
-      become: yes
-      become_method: sudo
-      tags: [bmctl]  
-    - role: service-accounts
-      tags: [sa,serviceaccount]  
+

@@ -19,8 +19,8 @@
     - worker_nodes
   remote_user: "{{ login_user }}"
   gather_facts: "no"
-  vars_files:
-    - "vars/anthos_vars_{{ cluster_type }}.yml"
+  #vars_files:
+          # - "vars/anthos_vars_{{ cluster_type }}.yml"
   roles:
     - role: ubuntu-prereq
       become: yes
@@ -34,25 +34,9 @@
 - hosts: workstation
   remote_user: "{{ login_user }}"
   gather_facts: "no"
-  vars_files:
-    - "vars/anthos_vars_{{ cluster_type }}.yml"
+  # vars_files:
+  #   - "vars/anthos_vars_{{ cluster_type }}.yml"
   roles:
-    # - role: ws-docker
-    #   become: yes
-    #   become_method: sudo
-    #   tags: [never,docker]
-    # - role: gcloud-sdk
-    #   become: yes
-    #   become_method: sudo
-    #   tags: [never,gcloud]
-    # - role: kubectl-tool
-    #   become: yes
-    #   become_method: sudo
-    #   tags: [kubectl]
-    # - role: bmctl-tool
-    #   become: yes
-    #   become_method: sudo
-    #   tags: [bmctl]
     - role: anthos
       tags: [anthos]
     - role: connect-gateway
