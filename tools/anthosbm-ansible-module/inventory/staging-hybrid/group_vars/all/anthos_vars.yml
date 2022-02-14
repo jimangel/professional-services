@@ -43,5 +43,3 @@ cgw_members:
 - serviceAccount:EXAMPLE_SA@GCP_PROJECT_ID.iam.gserviceaccount.com
 # Define maintenance nodes in cidrBlocks addresses, Example 10.200.0.5-10.200.0.8
 maintenance_nodes_block: []
- 
- 

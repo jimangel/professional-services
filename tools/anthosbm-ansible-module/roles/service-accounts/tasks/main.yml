@@ -12,7 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+- name: Delete bmctl workspace cluster directory if exists
+  ansible.builtin.file:
+    path: "{{ login_user_home }}/{{ bmctl_workspace_dir }}/{{ cluster_name }}"
+    state: absent
+  tags: [preflight-admin, preflight-hybrid,preflight-user,create-admin,create-hybrid,create-user]
+
+- name: Create bmctl workspace cluster directory
+  ansible.builtin.file:
+    path: "{{ login_user_home }}/{{ bmctl_workspace_dir }}/{{ cluster_name }}"
+    state: directory
+    owner: "{{ login_user }}"
+    group: "{{ login_user_group }}"
+  tags: [preflight-admin,preflight-hybrid,preflight-user,create-admin,create-hybrid,create-user]
+
 - name: Enabling APIs and Creating Service Accounts
   shell:
-    cmd: "bmctl create config -c {{ cluster_name }} --enable-apis --create-service-accounts --project-id={{ project_id }}"
+    cmd: |
+      export GOOGLE_APPLICATION_CREDENTIALS="{{ gcp_sa_key_dir }}/{{ gcloud_preq_sa_name }}.json"
+      bmctl create config -c "{{ cluster_name }}" --enable-apis --create-service-accounts --project-id="{{ project_id }}"
     chdir: "{{ login_user_home }}"
