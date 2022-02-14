@@ -40,45 +40,71 @@
 
 - name: Check Config
   shell:
-    cmd: "bmctl check config -c {{ cluster_name }} --bootstrap-cluster-pod-cidr={{ kind_pod_cidr }} --bootstrap-cluster-service-cidr={{ kind_service_cidr }}"
+    cmd: |
+      export GOOGLE_APPLICATION_CREDENTIALS="{{ gcp_sa_key_dir }}/{{ gcloud_preq_sa_name }}.json"
+      bmctl check config -c "{{ cluster_name }}" --bootstrap-cluster-pod-cidr="{{ kind_pod_cidr }}" --bootstrap-cluster-service-cidr="{{ kind_service_cidr }}"
     chdir: "{{ login_user_home }}"
   when: cluster_type != "user"
   tags: [preflight-admin,preflight-hybrid,preflight-user,create-admin,create-hybrid] 
 
 - name: Check Config for User cluster
   shell:
-    cmd: "bmctl check config -c {{ cluster_name }} --admin-kubeconfig {{ admin_kubeconfig_path }} --bootstrap-cluster-pod-cidr={{ kind_pod_cidr }} --bootstrap-cluster-service-cidr={{ kind_service_cidr }}"
+    cmd: |
+      export GOOGLE_APPLICATION_CREDENTIALS="{{ gcp_sa_key_dir }}/{{ gcloud_preq_sa_name }}.json"
+      bmctl check config -c "{{ cluster_name }}" --admin-kubeconfig "{{ admin_kubeconfig_path }}" --bootstrap-cluster-pod-cidr="{{ kind_pod_cidr }}" --bootstrap-cluster-service-cidr="{{ kind_service_cidr }}"
     chdir: "{{ login_user_home }}"
   when: cluster_type == "user"
   tags: [create-user,preflight-user]
 
 - name: Preflight check
   shell:
-    cmd: "bmctl check preflight -c {{ cluster_name }} --bootstrap-cluster-pod-cidr={{ kind_pod_cidr }} --bootstrap-cluster-service-cidr={{ kind_service_cidr }}"
+    cmd: |
+      export GOOGLE_APPLICATION_CREDENTIALS="{{ gcp_sa_key_dir }}/{{ gcloud_preq_sa_name }}.json"
+      bmctl check preflight -c "{{ cluster_name }}" --bootstrap-cluster-pod-cidr="{{ kind_pod_cidr }}" --bootstrap-cluster-service-cidr="{{ kind_service_cidr }}"
     chdir: "{{ login_user_home }}"
   when: cluster_type != "user"
   tags: [preflight-admin,preflight-hybrid]
 
 - name: Preflight check User Cluster
   shell:
-    cmd: "bmctl check preflight -c {{ cluster_name }} --admin-kubeconfig {{ admin_kubeconfig_path }} --bootstrap-cluster-pod-cidr={{ kind_pod_cidr }} --bootstrap-cluster-service-cidr={{ kind_service_cidr }}"
+    cmd: |
+      export GOOGLE_APPLICATION_CREDENTIALS="{{ gcp_sa_key_dir }}/{{ gcloud_preq_sa_name }}.json"
+      bmctl check preflight -c "{{ cluster_name }}" --admin-kubeconfig "{{ admin_kubeconfig_path }}" --bootstrap-cluster-pod-cidr="{{ kind_pod_cidr }}" --bootstrap-cluster-service-cidr="{{ kind_service_cidr }}"
     chdir: "{{ login_user_home }}"
   when: cluster_type == "user"
   tags: [preflight-user]
 
 - name: Create Cluster
   shell:
-    cmd: "bmctl create cluster -c {{ cluster_name }} --bootstrap-cluster-pod-cidr={{ kind_pod_cidr }} --bootstrap-cluster-service-cidr={{ kind_service_cidr }}"
+    cmd: |
+      export GOOGLE_APPLICATION_CREDENTIALS="{{ gcp_sa_key_dir }}/{{ gcloud_preq_sa_name }}.json"
+      bmctl create cluster -c "{{ cluster_name }}" --bootstrap-cluster-pod-cidr="{{ kind_pod_cidr }}" --bootstrap-cluster-service-cidr="{{ kind_service_cidr }}" > /dev/null
+      echo $GOOGLE_APPLICATION_CREDENTIALS
     chdir: "{{ login_user_home }}"
   when: cluster_type != "user"
+  register: gcloud_preq_service_account_key
   tags: [create-admin,create-hybrid]
+
+- name: Print Google Application Credentials Used During Creating Non-User Anthos Cluster
+  ansible.builtin.debug:
+    msg: "{{ gcloud_preq_service_account_key.stdout }}"
+  when: cluster_type != "user"
 
 - name: Create User Cluster
   shell:
-    cmd: "bmctl create cluster -c {{ cluster_name }} --kubeconfig {{ admin_kubeconfig_path }} --bootstrap-cluster-pod-cidr={{ kind_pod_cidr }} --bootstrap-cluster-service-cidr={{ kind_service_cidr }}"
+    cmd: |
+      export GOOGLE_APPLICATION_CREDENTIALS="{{ gcp_sa_key_dir }}/{{ gcloud_preq_sa_name }}.json"
+      bmctl create cluster -c "{{ cluster_name }}" --kubeconfig "{{ admin_kubeconfig_path }}" --bootstrap-cluster-pod-cidr="{{ kind_pod_cidr }}" --bootstrap-cluster-service-cidr="{{ kind_service_cidr }}" > /dev/null
+      echo $GOOGLE_APPLICATION_CREDENTIALS
     chdir: "{{ login_user_home }}"
   when: cluster_type == "user"
+  register: gcloud_preq_service_account_key
   tags: [create-user]
+
+- name: Print Google Application Credentials Used During Creating User Anthos Cluster
+  ansible.builtin.debug:
+    msg: "{{ gcloud_preq_service_account_key.stdout }}"
+  when: cluster_type == "user"
 
 - name: Get kubeconfig location
   shell: echo "{{ login_user_home }}/{{ bmctl_workspace_dir }}/{{ cluster_name }}/{{ cluster_name }}-kubeconfig"

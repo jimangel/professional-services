@@ -21,12 +21,16 @@
 
 - name: Update admin/hybrid Cluster
   shell:
-    cmd: "bmctl update cluster -c {{ cluster_name }} --kubeconfig {{ admin_kubeconfig_path }}"
+    cmd: |
+      export GOOGLE_APPLICATION_CREDENTIALS="{{ gcp_sa_key_dir }}/{{ gcloud_preq_sa_name }}.json"
+      bmctl update cluster -c "{{ cluster_name }}" --kubeconfig "{{ admin_kubeconfig_path }}"
     chdir: "{{ login_user_home }}"
   when: cluster_type != "user" 
 
 - name: Update user Cluster
   shell:
-    cmd: "bmctl update cluster -c {{ cluster_name }} --admin-kubeconfig {{ admin_kubeconfig_path }}"
+    cmd: |
+      export GOOGLE_APPLICATION_CREDENTIALS="{{ gcp_sa_key_dir }}/{{ gcloud_preq_sa_name }}.json"
+      bmctl update cluster -c "{{ cluster_name }}" --admin-kubeconfig "{{ admin_kubeconfig_path }}"
     chdir: "{{ login_user_home }}"
   when: cluster_type == "user"  

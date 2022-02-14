@@ -21,5 +21,7 @@
 
 - name: Upgrade Anthos Cluster Version
   shell:
-    cmd: "bmctl upgrade cluster -c {{ cluster_name }} --kubeconfig {{ admin_kubeconfig_path }} --bootstrap-cluster-pod-cidr={{ kind_pod_cidr }} --bootstrap-cluster-service-cidr={{ kind_service_cidr }}"
+    cmd: |
+      export GOOGLE_APPLICATION_CREDENTIALS="{{ gcp_sa_key_dir }}/{{ gcloud_preq_sa_name }}.json"
+      bmctl upgrade cluster -c "{{ cluster_name }}" --kubeconfig "{{ admin_kubeconfig_path }}" --bootstrap-cluster-pod-cidr="{{ kind_pod_cidr }}" --bootstrap-cluster-service-cidr="{{ kind_service_cidr }}"
     chdir: "{{ login_user_home }}"
