@@ -30,11 +30,5 @@
   shell:
     cmd: |
       export GOOGLE_APPLICATION_CREDENTIALS="{{ gcp_sa_key_dir }}/{{ gcloud_preq_sa_name }}.json"
-      bmctl create config -c "{{ cluster_name }}" --enable-apis --create-service-accounts --project-id="{{ project_id }}" > /dev/null
-      echo $GOOGLE_APPLICATION_CREDENTIALS
+      bmctl create config -c "{{ cluster_name }}" --enable-apis --create-service-accounts --project-id="{{ project_id }}"
     chdir: "{{ login_user_home }}"
-  register: gcloud_preq_service_account_key
-
-- name: Print Google Application Credentials Used During Enabling Anthos APIs
-  ansible.builtin.debug:
-    msg: "{{ gcloud_preq_service_account_key.stdout }}"
