@@ -13,6 +13,11 @@
 # limitations under the License.
 
 ---
+- name: Authenticate with the pre-req service account
+  shell: >
+     gcloud auth activate-service-account "{{ gcloud_preq_sa_name }}@{{ project_id }}.iam.gserviceaccount.com" --key-file="{{ gcp_sa_key_dir }}/{{ gcloud_preq_sa_name }}.json" --project={{ project_id }}
+  ignore_errors: yes
+
 - name: Remove bmctl if present
   ansible.builtin.file:
     path: /usr/local/sbin/bmctl
@@ -42,3 +47,8 @@
   shell:
     cmd: mv bmctl /usr/local/sbin/
   become: yes
+
+- name: Revoke access with pre-req service account
+  shell: >
+     gcloud auth revoke "{{ gcloud_preq_sa_name }}@{{ project_id }}.iam.gserviceaccount.com"
+  ignore_errors: yes

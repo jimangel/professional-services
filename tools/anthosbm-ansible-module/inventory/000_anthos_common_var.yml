@@ -23,7 +23,7 @@ os_type: "ubuntu"
 bmctl_download_url: gs://anthos-baremetal-release/bmctl/1.9.2/linux-amd64/bmctl
 bmctl_workspace_dir: bmctl-workspace
 gcp_sa_key_dir: "{{ login_user_home }}/gcp_keys"
-gcloud_preq_sa_name: "anthos-preq-gcloud-svc-account-{{ project_id }}"
+gcloud_preq_sa_name: anthos-preq-svc-account
 
 ## Dont need the service account name.Its being taken care by bmctl
 # local_gcr_sa_name: anthos-gcr-svc-account
