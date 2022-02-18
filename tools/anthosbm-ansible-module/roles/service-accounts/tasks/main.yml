@@ -12,12 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Delete bmctl workspace cluster directory if exists
-  ansible.builtin.file:
-    path: "{{ login_user_home }}/{{ bmctl_workspace_dir }}/{{ cluster_name }}"
-    state: absent
-  tags: [preflight-admin, preflight-hybrid,preflight-user,create-admin,create-hybrid,create-user]
-
 - name: Create bmctl workspace cluster directory
   ansible.builtin.file:
     path: "{{ login_user_home }}/{{ bmctl_workspace_dir }}/{{ cluster_name }}"
@@ -26,9 +20,26 @@
     group: "{{ login_user_group }}"
   tags: [preflight-admin,preflight-hybrid,preflight-user,create-admin,create-hybrid,create-user]
 
+- name: Check if cluster config file exists
+  stat:
+    path: "{{ login_user_home }}/{{ bmctl_workspace_dir }}/{{ cluster_name }}/{{ cluster_name }}.yaml"
+  register: cluster_file_check
+
+- name: Print Message In Case of Creation of Service Accounts is skipped
+  ansible.builtin.debug:
+    msg: "Creation of Service Accounts for Anthos will be skipped because the anthos cluster configuartion file is already present. If default cluster configuration file is present, then execute create anthos script to update the cluster configuration file."
+  when: cluster_file_check.stat.exists == True
+
 - name: Enabling APIs and Creating Service Accounts
   shell:
     cmd: |
       export GOOGLE_APPLICATION_CREDENTIALS="{{ gcp_sa_key_dir }}/{{ gcloud_preq_sa_name }}.json"
       bmctl create config -c "{{ cluster_name }}" --enable-apis --create-service-accounts --project-id="{{ project_id }}"
     chdir: "{{ login_user_home }}"
+  when: cluster_file_check.stat.exists == False
+  register: check_task_status
+
+- name: Print Message In Case of Creation of Service Accounts
+  ansible.builtin.debug:
+     msg: "Service Accounts for Anthos has been created. Kindly note that the current cluster configuration file is a default one. Execute create anthos script to update the cluster configuration file."
+  when: check_task_status.changed
