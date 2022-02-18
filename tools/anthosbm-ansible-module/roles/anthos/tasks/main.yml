@@ -15,13 +15,7 @@
 - name: Reset ssh connection to allow group changes
   meta: reset_connection
   tags: [preflight-admin, preflight-hybrid,create-admin,create-hybrid,create-user]
-  
-- name: Delete bmctl workspace cluster directory if exists
-  ansible.builtin.file:
-    path: "{{ login_user_home }}/{{ bmctl_workspace_dir }}/{{ cluster_name }}"
-    state: absent
-  tags: [preflight-admin, preflight-hybrid,preflight-user,create-admin,create-hybrid,create-user]  
-    
+      
 - name: Create bmctl workspace cluster directory
   ansible.builtin.file:
     path: "{{ login_user_home }}/{{ bmctl_workspace_dir }}/{{ cluster_name }}"
