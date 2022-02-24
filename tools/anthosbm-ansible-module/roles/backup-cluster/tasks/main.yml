@@ -12,21 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#- name: Performing Resources Stability Check For Admin/Hybrid Cluster
-#  shell:
-#    cmd: |
-#      export GOOGLE_APPLICATION_CREDENTIALS="{{ gcp_sa_key_dir }}/{{ gcloud_preq_sa_name }}.json"
-#      bmctl check cluster -c "{{ cluster_name }}"
-#    chdir: "{{ login_user_home }}"
-#  when: cluster_type != "user"
+- name: Performing Resources Stability Check For Admin/Hybrid Cluster
+  shell:
+    cmd: |
+      export GOOGLE_APPLICATION_CREDENTIALS="{{ gcp_sa_key_dir }}/{{ gcloud_preq_sa_name }}.json"
+      bmctl check cluster -c "{{ cluster_name }}"
+    chdir: "{{ login_user_home }}"
+  when: cluster_type != "user"
 
-  #- name: Performing Resources Stability Check For User Cluster
-  #shell:
-  #  cmd: |
-  #    export GOOGLE_APPLICATION_CREDENTIALS="{{ gcp_sa_key_dir }}/{{ gcloud_preq_sa_name }}.json"
-  #    bmctl check cluster -c "{{ cluster_name }}" --admin-kubeconfig "{{ admin_kubeconfig_path }}"
-  #  chdir: "{{ login_user_home }}"
-  #when: cluster_type == "user"
+- name: Performing Resources Stability Check For User Cluster
+  shell:
+    cmd: |
+      export GOOGLE_APPLICATION_CREDENTIALS="{{ gcp_sa_key_dir }}/{{ gcloud_preq_sa_name }}.json"
+      bmctl check cluster -c "{{ cluster_name }}" --admin-kubeconfig "{{ admin_kubeconfig_path }}"
+    chdir: "{{ login_user_home }}"
+  when: cluster_type == "user"
 
 - name: Performing Cluster Stability Check
   shell:
@@ -38,10 +38,6 @@
   fail:
      msg: "Anthos cluster is unstable to initiate the backup process."
   when: "'True' in cluster_reconciliation_status.stdout"
-
-  #- name: Print Message In Case Cluster is Unstable To Take Backup
-  #fail:
-  #   msg: "bmctl backup cluster -c {{ cluster_name }} --kubeconfig {{ admin_kubeconfig_path }} --yes"
      
 - name: Initiating Backup Process For Anthos Cluster
   shell:
