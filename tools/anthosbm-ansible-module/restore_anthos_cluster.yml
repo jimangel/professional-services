@@ -13,7 +13,7 @@
 # limitations under the License.
 
 ---
-# Playbook To Update Anthos Cluster
+# Playbook To Restore Anthos Cluster [For version 1.10.2 and onwards]
 - hosts: all
   remote_user: "{{ login_user }}"
   gather_facts: "no"
@@ -31,4 +31,4 @@
   remote_user: "{{ login_user }}"
   gather_facts: "no"
   roles:
-    - role: update-cluster
+    - role: restore-cluster
