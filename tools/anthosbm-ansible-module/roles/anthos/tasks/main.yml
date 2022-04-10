@@ -36,7 +36,7 @@
   shell:
     cmd: |
       export GOOGLE_APPLICATION_CREDENTIALS="{{ gcp_sa_key_dir }}/{{ gcloud_preq_sa_name }}.json"
-      bmctl check config -c "{{ cluster_name }}" --bootstrap-cluster-pod-cidr="{{ kind_pod_cidr }}" --bootstrap-cluster-service-cidr="{{ kind_service_cidr }}"
+      bmctl check config -c "{{ cluster_name }}"
     chdir: "{{ login_user_home }}"
   when: cluster_type != "user"
   tags: [preflight-admin,preflight-hybrid,preflight-user,create-admin,create-hybrid] 
@@ -45,7 +45,7 @@
   shell:
     cmd: |
       export GOOGLE_APPLICATION_CREDENTIALS="{{ gcp_sa_key_dir }}/{{ gcloud_preq_sa_name }}.json"
-      bmctl check config -c "{{ cluster_name }}" --admin-kubeconfig "{{ admin_kubeconfig_path }}" --bootstrap-cluster-pod-cidr="{{ kind_pod_cidr }}" --bootstrap-cluster-service-cidr="{{ kind_service_cidr }}"
+      bmctl check config -c "{{ cluster_name }}" --admin-kubeconfig "{{ admin_kubeconfig_path }}"
     chdir: "{{ login_user_home }}"
   when: cluster_type == "user"
   tags: [create-user,preflight-user]
@@ -54,7 +54,7 @@
   shell:
     cmd: |
       export GOOGLE_APPLICATION_CREDENTIALS="{{ gcp_sa_key_dir }}/{{ gcloud_preq_sa_name }}.json"
-      bmctl check preflight -c "{{ cluster_name }}" --bootstrap-cluster-pod-cidr="{{ kind_pod_cidr }}" --bootstrap-cluster-service-cidr="{{ kind_service_cidr }}"
+      bmctl check preflight -c "{{ cluster_name }}"
     chdir: "{{ login_user_home }}"
   when: cluster_type != "user"
   tags: [preflight-admin,preflight-hybrid]
@@ -63,7 +63,7 @@
   shell:
     cmd: |
       export GOOGLE_APPLICATION_CREDENTIALS="{{ gcp_sa_key_dir }}/{{ gcloud_preq_sa_name }}.json"
-      bmctl check preflight -c "{{ cluster_name }}" --admin-kubeconfig "{{ admin_kubeconfig_path }}" --bootstrap-cluster-pod-cidr="{{ kind_pod_cidr }}" --bootstrap-cluster-service-cidr="{{ kind_service_cidr }}"
+      bmctl check preflight -c "{{ cluster_name }}" --admin-kubeconfig "{{ admin_kubeconfig_path }}"
     chdir: "{{ login_user_home }}"
   when: cluster_type == "user"
   tags: [preflight-user]
@@ -72,7 +72,7 @@
   shell:
     cmd: |
       export GOOGLE_APPLICATION_CREDENTIALS="{{ gcp_sa_key_dir }}/{{ gcloud_preq_sa_name }}.json"
-      bmctl create cluster -c "{{ cluster_name }}" --bootstrap-cluster-pod-cidr="{{ kind_pod_cidr }}" --bootstrap-cluster-service-cidr="{{ kind_service_cidr }}"
+      bmctl create cluster -c "{{ cluster_name }}"
     chdir: "{{ login_user_home }}"
   when: cluster_type != "user"
   tags: [create-admin,create-hybrid]
@@ -81,7 +81,7 @@
   shell:
     cmd: |
       export GOOGLE_APPLICATION_CREDENTIALS="{{ gcp_sa_key_dir }}/{{ gcloud_preq_sa_name }}.json"
-      bmctl create cluster -c "{{ cluster_name }}" --kubeconfig "{{ admin_kubeconfig_path }}" --bootstrap-cluster-pod-cidr="{{ kind_pod_cidr }}" --bootstrap-cluster-service-cidr="{{ kind_service_cidr }}"
+      bmctl create cluster -c "{{ cluster_name }}" --kubeconfig "{{ admin_kubeconfig_path }}"
     chdir: "{{ login_user_home }}"
   when: cluster_type == "user"
   tags: [create-user]

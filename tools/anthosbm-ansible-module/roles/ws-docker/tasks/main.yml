@@ -13,6 +13,19 @@
 # limitations under the License.
 
 ---
+
+- name: Remove previous docker versions [Ubuntu]
+  apt:
+    pkg:
+    - docker
+    - docker-engine
+    - docker.io
+    - containerd
+    - runc
+    state: absent
+    autoremove: yes
+  when: os_type == "ubuntu"
+  
 - name: Update apt package manager [Ubuntu]
   apt:
     update_cache: yes
