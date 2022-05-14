@@ -49,3 +49,10 @@ container_runtime: containerd
 # enable/disable application logging for cluster workloads. use 'true' to enable
 app_logs: false
 # change pod and service cidr if the default ones overlap with cluster nodes subnets
+
+# kubelet config file on each node
+kubelet_config_file: /var/lib/kubelet/config.yaml
+# configuration values to be set in the kubelet config
+serialize_image_pulls:
+registry_pull_qps:
+registry_burst:

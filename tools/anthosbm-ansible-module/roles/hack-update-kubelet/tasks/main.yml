@@ -1,0 +1,31 @@
+# Copyright 2021 Google LLC
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+- name: Check that the /var/lib/kubelet/kubeadm-flags.env exists
+  stat:
+    path: /var/lib/kubelet/kubeadm-flags.env
+  register: stat_result
+
+- name: Set parallel-image-pulls and default qps and burst
+  shell: |
+    sed -i 's/\s*--serialize-image-pulls=\(\w*\) --registry-burst=\(\w*\) --registry-qps=\(\w*\)//g' /var/lib/kubelet/kubeadm-flags.env
+    sed -i 's/\(.*\)"/\1 --serialize-image-pulls=false --registry-burst=10 --registry-qps=5"/' /var/lib/kubelet/kubeadm-flags.env
+  when: stat_result.stat.exists
+
+- name: Restart kubelet
+  ansible.builtin.systemd:
+    name: kubelet
+    state: restarted
+  when: stat_result.stat.exists
